@@ -10,6 +10,6 @@ export async function POST(req) {
 
         return NextResponse.json({ message: 'Benutzer registriert.'}, {status: 201});
     } catch (error) {
-        return NextResponse.json({"Fehler beim Registrieren des Benutzers"}, {status: 500})
+        return NextResponse.json({message: "Fehler beim Registrieren des Benutzers"}, {status: 500})
     }
 }

@@ -27,8 +27,13 @@ const RegisterFrom = () => {
                     name, email, password
                 })
             })
+
+            if(res.ok) {
+                const form = e.target;
+                form.reset();
+            }
         } catch (error) {
-            
+            console.log('Registieren fehl geschlagen');
         }
     };
 
