@@ -11,10 +11,29 @@ const RegisterFrom = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    const handleSubmit = (e) => {e.preventDefault();
+    const handleSubmit = async (e) => {e.preventDefault();
         if(!name || !email || !password) {
             setError("Bitte alle Felder ausfuellen");
             return;
+        }
+
+        try {
+            const res = await fetch('api/register', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name, email, password
+                })
+            })
+
+            if(res.ok) {
+                const form = e.target;
+                form.reset();
+            }
+        } catch (error) {
+            console.log('Registieren fehl geschlagen');
         }
     };
 
