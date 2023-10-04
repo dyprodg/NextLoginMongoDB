@@ -24,3 +24,5 @@ make shure that the .env is in the .gitignore to prevent leaking your keys
 when your done with this you can start the dev server using:
 
 npm run dev
+
+now you can create what ever you want on the dashboard page and its protected without login.
