@@ -13,11 +13,26 @@ const RegisterFrom = () => {
 
     const handleSubmit = async (e) => {e.preventDefault();
         if(!name || !email || !password) {
-            setError("Bitte alle Felder ausfuellen");
+            setError("Bitte alle Felder ausfüllen");
             return;
         }
 
         try {
+            const resUserExists = await fetch('api/userExists', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({email})
+            });
+
+            const {user} = await resUserExists.json();
+
+            if (user) {
+                setError('Benutzer existiert bereits');
+                return;
+            } 
+
             const res = await fetch('api/register', {
                 method: "POST",
                 headers: {
@@ -33,7 +48,7 @@ const RegisterFrom = () => {
                 form.reset();
             }
         } catch (error) {
-            console.log('Registieren fehl geschlagen');
+            console.log('Registieren fehlgeschlagen');
         }
     };
 
