@@ -5,8 +5,8 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Next Adventskalender',
-  description: 'Ein Adventskalender erstellt mit Next.js',
+  title: 'NextLogin',
+  description: 'Account registierung und Login preset Nextjs und MongoDB',
 }
 
 export default function RootLayout({ children }) {
