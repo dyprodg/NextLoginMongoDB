@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 
 const RegisterFrom = () => {
@@ -11,13 +12,30 @@ const RegisterFrom = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    const router = useRouter();
+
     const handleSubmit = async (e) => {e.preventDefault();
         if(!name || !email || !password) {
-            setError("Bitte alle Felder ausfuellen");
+            setError("Bitte alle Felder ausfüllen");
             return;
         }
 
         try {
+            const resUserExists = await fetch('api/userExists', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({email})
+            });
+
+            const {user} = await resUserExists.json();
+
+            if (user) {
+                setError('Benutzer existiert bereits');
+                return;
+            } 
+
             const res = await fetch('api/register', {
                 method: "POST",
                 headers: {
@@ -31,9 +49,12 @@ const RegisterFrom = () => {
             if(res.ok) {
                 const form = e.target;
                 form.reset();
+                router.push('/');
+            } else {
+                console.log('Registieren fehlgeschlagen');
             }
         } catch (error) {
-            console.log('Registieren fehl geschlagen');
+            console.log('Registieren fehlgeschlagen'), error;
         }
     };
 
@@ -47,7 +68,7 @@ const RegisterFrom = () => {
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <input onChange={(e) => setName(e.target.value)} type="text" placeholder="Name"/>
-                <input onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email"/>
+                <input onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email"/>
                 <input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Passwort"/>
                 <button className="bg-black text-white font-bold curser-pointer px-6 py-2">Registrieren</button>
 
